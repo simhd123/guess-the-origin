@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guess the Origin – Olympic sports quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B1F3A;--blue:#0081C8;--yellow:#F4B400;--green:#00A651;--red:#EE334E;--sky:#E6F1FA;--ink:#0B1F3A;--muted:#4A5568}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--sky);font-family:Inter,system-ui,sans-serif;color:var(--ink)}
+.wrap{max-width:560px;margin:0 auto;padding:20px 16px 40px;min-height:100vh;display:flex;flex-direction:column;gap:16px}
+.top{background:var(--navy);color:#fff;border-radius:28px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)}
+h1{margin:0;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:40px;line-height:1;text-transform:uppercase}
+.pills{display:flex;gap:6px}.pills span{width:34px;height:7px;border-radius:999px}
+.card{background:#fff;border-radius:28px;padding:22px;box-shadow:0 4px 18px rgba(11,31,58,.10);display:flex;flex-direction:column;gap:16px}
+.lead{margin:0;font-size:17px;line-height:1.5}
+.rules{margin:0;padding-left:20px;font-size:15px;line-height:1.6;color:var(--muted)}
+.btn{appearance:none;border:0;border-radius:999px;background:var(--navy);color:#fff;font:700 18px Inter,sans-serif;padding:16px 22px;cursor:pointer;min-height:52px}
+.btn:hover{background:#163663}
+.btn.alt{background:var(--yellow);color:var(--navy)}
+.hud{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:15px}
+.score{background:var(--navy);color:#fff;border-radius:999px;padding:6px 14px}
+.timer{height:10px;background:#E2E8F0;border-radius:999px;overflow:hidden}
+.timer i{display:block;height:100%;width:100%;background:var(--green);border-radius:999px;transition:width .1s linear,background .3s}
+.q{margin:0;font-size:21px;line-height:1.35;font-weight:800}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{appearance:none;text-align:left;border:2px solid #CBD5E1;background:#fff;border-radius:18px;padding:14px 16px;font:600 17px Inter,sans-serif;color:var(--ink);cursor:pointer;min-height:52px}
+.opt:hover:not(:disabled){border-color:var(--blue);background:#F2F8FD}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--green);background:#E3F6EC}
+.opt.wrong{border-color:var(--red);background:#FDE8EB}
+.fb{border-radius:18px;padding:14px 16px;font-size:15px;line-height:1.5}
+.fb.ok{background:#E3F6EC}.fb.no{background:#FDE8EB}
+.fb b{display:block;margin-bottom:4px;font-size:16px}
+.medal{font-size:72px;line-height:1;text-align:center}
+.big{font-family:Anton,Impact,sans-serif;font-size:48px;text-align:center;text-transform:uppercase;line-height:1}
+.center{text-align:center;margin:0}
+.muted{color:var(--muted)}
+.foot{font-size:13px;color:var(--muted);text-align:center;margin-top:auto}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <div class="kicker">World of English Day · Sport</div>
+    <h1>Guess the origin!</h1>
+    <div class="pills" aria-hidden="true"><span style="background:#0081C8"></span><span style="background:#F4B400"></span><span style="background:#fff"></span><span style="background:#00A651"></span><span style="background:#EE334E"></span></div>
+  </header>
+
+  <section class="card" id="start">
+    <p class="lead">Many Olympic sports were born in English-speaking countries. How well do you really know them?</p>
+    <ul class="rules">
+      <li>10 random questions (out of 30), 4 answers each</li>
+      <li>12 seconds per question</li>
+      <li>100 points per right answer + a speed bonus</li>
+      <li>Play with your group: only the <b>best score</b> wins the chocolate medal!</li>
+    </ul>
+    <button class="btn" id="go" type="button">Start the challenge</button>
+  </section>
+
+  <section class="card" id="play" hidden>
+    <div class="hud"><span id="count">Question 1/10</span><span class="score" id="score">0 pts</span></div>
+    <div class="timer" aria-hidden="true"><i id="bar"></i></div>
+    <p class="q" id="q"></p>
+    <div class="opts" id="opts"></div>
+    <div class="fb" id="fb" hidden></div>
+    <button class="btn" id="next" type="button" hidden>Next question</button>
+  </section>
+
+  <section class="card" id="end" hidden>
+    <div class="medal" id="medal" aria-hidden="true"></div>
+    <div class="big" id="pts" style="font-size:64px"></div>
+    <div class="big" id="rank" style="font-size:30px"></div>
+    <p class="center lead" id="summary"></p>
+    <p class="center muted" id="best"></p>
+    <button class="btn alt" id="again" type="button">Play again</button>
+    <p class="center lead"><b>Show this screen to our team.</b> Only the best score of your group wins the chocolate medal!</p>
+  </section>
+
+  <p class="foot">Gabriel Korchia · Simon Haddad · Radek Roussel · Cameron Duchassin</p>
+</main>
+
+<script>
+const BANK = [
+  {q:"Basketball was invented in the USA in 1891. What nationality was its inventor, James Naismith?", a:"Canadian", o:["American","Scottish","English"], x:"James Naismith was a Canadian teacher working in Springfield, Massachusetts."},
+  {q:"What was the very first name of volleyball, invented in 1895?", a:"Mintonette", o:["Poona","Snurfer","Basket-net"], x:"William Morgan called his game “Mintonette”, only 4 years after basketball was born."},
+  {q:"British officers brought back a game from India called “poona”. What is it called today?", a:"Badminton", o:["Snooker","Polo","Squash"], x:"It was renamed after Badminton House, an English country house."},
+  {q:"Where were the first common rules of modern football written in 1863?", a:"In a London pub", o:["At Rugby School","At Wimbledon","At Cambridge University"], x:"Clubs met in a London pub and created the Football Association. The key rule: no hands!"},
+  {q:"Which of these Olympic sports was NOT born in an English-speaking country?", a:"Handball", o:["Squash","Lacrosse","Breaking"], x:"Handball comes from Denmark and Germany. Squash is English, lacrosse was codified in Canada, breaking was born in New York."},
+  {q:"Breaking made its Olympic debut at Paris 2024. Where was it born in the 1970s?", a:"The Bronx, New York", o:["Los Angeles","London","Toronto"], x:"Breaking was born in the streets of the Bronx, New York."},
+  {q:"Which sport, first played by Indigenous peoples of North America, was codified in Canada in 1867?", a:"Lacrosse", o:["Ice hockey","Curling","Baseball"], x:"Lacrosse is Canada’s national summer sport, and it comes to the Olympics at LA 2028."},
+  {q:"The Rugby World Cup trophy is named after…", a:"William Webb Ellis", o:["Pierre de Coubertin","James Naismith","Charles Miller"], x:"Legend says the student William Webb Ellis picked up the ball and ran with it in 1823."},
+  {q:"Cricket was played at the Olympics only once before LA 2028. When?", a:"Paris 1900", o:["London 1908","Athens 1896","London 1948"], x:"One match only: Great Britain v France. Most of the “French” team were British people living in Paris!"},
+  {q:"In which country is St Andrews, known as “the Home of Golf”?", a:"Scotland", o:["England","Ireland","Wales"], x:"Golf comes from 15th-century Scotland, and St Andrews made the 18-hole course the standard."},
+  {q:"What did the word “snooker” originally mean?", a:"A first-year military cadet", o:["A lost ball","A bad shot","A pub owner"], x:"Snooker was invented by British army officers in India in 1875. A “snooker” was slang for a new cadet."},
+  {q:"The first organised indoor ice hockey game was played in 1875. In which city?", a:"Montreal", o:["Toronto","Boston","Ottawa"], x:"Ice hockey is Canadian, and the Stanley Cup dates from 1893."},
+  {q:"Modern tennis was created in England in 1874. What is its French ancestor called?", a:"Jeu de paume", o:["La soule","Pétanque","Le palet"], x:"Lawn tennis grew out of the French “jeu de paume”, a game first played with the palm of the hand."},
+  {q:"Wimbledon is the oldest tennis tournament in the world. When was it first played?", a:"1877", o:["1896","1924","1863"], x:"Wimbledon started in 1877, only three years after modern lawn tennis was created."},
+  {q:"Table tennis was invented in Victorian England as an after-dinner game. What was sometimes used as a net?", a:"Books", o:["A broom","Plates","A rope"], x:"In the 1880s, people played on dining tables with a row of books as the net."},
+  {q:"What was “ping-pong” originally?", a:"A brand name", o:["A Chinese word","The sound of a bell","The name of a school"], x:"“Ping-pong” was a trademark before it became a common name for table tennis."},
+  {q:"Squash, coming to the Olympics at LA 2028, was invented around 1830 at which school?", a:"Harrow School", o:["Eton College","Rugby School","Oxford University"], x:"Pupils at Harrow School invented squash around 1830."},
+  {q:"Modern boxing rules (gloves, 3-minute rounds) were written in England in 1867. What are they called?", a:"The Queensberry Rules", o:["The Cambridge Rules","The Wimbledon Rules","The London Code"], x:"The Queensberry Rules are still the basis of modern boxing."},
+  {q:"Water polo was created in Britain in the 1870s. How was it first described?", a:"Football in the water", o:["Rugby on a boat","Swimming hockey","Water basketball"], x:"Water polo started as a kind of “football in the water”."},
+  {q:"The word “derby” comes from a famous English horse race. Which one?", a:"The Epsom Derby", o:["Royal Ascot","The Grand National","The Kentucky Derby"], x:"The Epsom Derby was first run in 1780."},
+  {q:"Snowboarding was born in the USA in the 1960s. What was the first model called?", a:"The Snurfer", o:["The Mintonette","The Skeeboard","The Snowskate"], x:"Snurfer = snow + surfer!"},
+  {q:"Skateboarding was created in California in the 1950s. By whom?", a:"Surfers with no waves", o:["Skiers in summer","Ice hockey players","BMX riders"], x:"Surfers wanted to “surf” on land when there were no waves. Skateboarding has been Olympic since Tokyo 2020."},
+  {q:"Pickleball, the fastest-growing sport in the USA, was invented in 1965 near which city?", a:"Seattle", o:["Miami","Chicago","Boston"], x:"Pickleball was invented near Seattle, in Washington State."},
+  {q:"Cheerleading started at the University of Minnesota in 1898. Who led it at first?", a:"Men", o:["Women","Teachers","Children"], x:"Surprise: cheerleading was originally led by men!"},
+  {q:"Australian rules football was created in Melbourne in 1859. Why, possibly?", a:"To keep cricketers fit in winter", o:["To train soldiers","To entertain gold miners","To replace rugby"], x:"It was possibly invented to keep cricketers in shape during the winter."},
+  {q:"Where was the first-ever Formula 1 World Championship race held, in 1950?", a:"Silverstone, England", o:["Monaco","Monza, Italy","Le Mans, France"], x:"F1 started at Silverstone, and most F1 teams are still based in England."},
+  {q:"Slalom rules were invented in 1922 by an Englishman, Arnold Lunn. In which country?", a:"Switzerland", o:["Norway","Austria","Canada"], x:"Skiing comes from Norway, but the slalom rules were written by an Englishman in Switzerland."},
+  {q:"The first recorded bike race took place in Paris in 1868. Who won it?", a:"An Englishman", o:["A Frenchman","An American","A Belgian"], x:"The Englishman James Moore won the first recorded bike race."},
+  {q:"Pierre de Coubertin was inspired by local “Olympian Games” in an English village. Which one?", a:"Much Wenlock", o:["Stratford-upon-Avon","Windsor","Bath"], x:"A doctor, William Penny Brookes, organised “Olympian Games” in Much Wenlock every year from 1850."},
+  {q:"Which city was the first to host the Summer Olympics three times?", a:"London", o:["Paris","Los Angeles","Athens"], x:"London hosted in 1908, 1948 and 2012."}
+];
+const N = 10, TIME = 12000;
+const $ = id => document.getElementById(id);
+let qs = [], i = 0, score = 0, right = 0, t0 = 0, raf = 0, locked = false, spent = 0;
+
+function shuffle(a){ a = a.slice(); for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1)); [a[k],a[j]]=[a[j],a[k]];} return a; }
+
+function start(){
+  qs = shuffle(BANK).slice(0, N); i = 0; score = 0; right = 0; spent = 0;
+  $('start').hidden = true; $('end').hidden = true; $('play').hidden = false;
+  show();
+}
+
+function show(){
+  locked = false;
+  const item = qs[i];
+  $('count').textContent = `Question ${i+1}/${N}`;
+  $('score').textContent = `${score} pts`;
+  $('q').textContent = item.q;
+  $('fb').hidden = true; $('next').hidden = true;
+  const box = $('opts'); box.innerHTML = '';
+  shuffle([item.a, ...item.o]).forEach(txt => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'opt'; b.textContent = txt;
+    b.addEventListener('click', () => answer(txt, b));
+    box.appendChild(b);
+  });
+  t0 = performance.now(); tick();
+}
+
+function tick(){
+  const left = Math.max(0, TIME - (performance.now() - t0));
+  const pct = left / TIME * 100, bar = $('bar');
+  bar.style.width = pct + '%';
+  bar.style.background = pct > 50 ? '#00A651' : pct > 25 ? '#F4B400' : '#EE334E';
+  if (left <= 0) { answer(null, null); return; }
+  raf = requestAnimationFrame(tick);
+}
+
+function answer(txt, btn){
+  if (locked) return; locked = true; cancelAnimationFrame(raf);
+  const item = qs[i], ok = txt === item.a;
+  const left = Math.max(0, TIME - (performance.now() - t0));
+  spent += TIME - left;
+  let gained = 0;
+  if (ok) { gained = 100 + Math.round(left / TIME * 50); score += gained; right++; }
+  [...$('opts').children].forEach(b => {
+    b.disabled = true;
+    if (b.textContent === item.a) b.classList.add('right');
+    else if (b === btn) b.classList.add('wrong');
+  });
+  const fb = $('fb');
+  fb.className = 'fb ' + (ok ? 'ok' : 'no');
+  fb.innerHTML = '';
+  const head = document.createElement('b');
+  head.textContent = ok ? `Correct! +${gained} pts` : (txt === null ? `Time’s up! It was: ${item.a}` : `Not quite! It was: ${item.a}`);
+  fb.appendChild(head); fb.appendChild(document.createTextNode(item.x));
+  fb.hidden = false;
+  $('score').textContent = `${score} pts`;
+  const nx = $('next'); nx.textContent = i === N-1 ? 'See my result' : 'Next question'; nx.hidden = false; nx.focus();
+}
+
+function next(){ i++; if (i < N) show(); else finish(); }
+
+function finish(){
+  $('play').hidden = true; $('end').hidden = false;
+  let medal = '💪', rank = 'Keep training!';
+  if (right >= 9) { medal = '🏆'; rank = 'Olympic champion'; }
+  else if (right >= 7) { medal = '🔥'; rank = 'Finalist'; }
+  else if (right >= 5) { medal = '👍'; rank = 'Qualified'; }
+  $('medal').textContent = medal; $('rank').textContent = rank; $('pts').textContent = `${score} pts`;
+  $('summary').textContent = `${score} points · ${right}/${N} right · ${(spent/1000).toFixed(1)} s`;
+  let best = score;
+  try { best = Math.max(score, +(localStorage.getItem('gto-best') || 0)); localStorage.setItem('gto-best', best); } catch(e) {}
+  $('best').textContent = `Same score? The fastest time wins. (Your best on this phone: ${best} pts)`;
+}
+
+$('go').addEventListener('click', start);
+$('again').addEventListener('click', start);
+$('next').addEventListener('click', next);
+</script>
+</body>
+</html>
