@@ -55,7 +55,7 @@ h1{margin:0;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:40px;l
     <p class="lead">Many Olympic sports were born in English-speaking countries. How well do you really know them?</p>
     <ul class="rules">
       <li>10 random questions (out of 30), 4 answers each</li>
-      <li>12 seconds per question</li>
+      <li>20 seconds per question</li>
       <li>100 points per right answer + a speed bonus</li>
       <li>Play with your group: only the <b>best score</b> wins the chocolate medal!</li>
     </ul>
@@ -86,38 +86,38 @@ h1{margin:0;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:40px;l
 
 <script>
 const BANK = [
-  {q:"Basketball was invented in the USA in 1891. What nationality was its inventor, James Naismith?", a:"Canadian", o:["American","Scottish","English"], x:"James Naismith was a Canadian teacher working in Springfield, Massachusetts."},
-  {q:"What was the very first name of volleyball, invented in 1895?", a:"Mintonette", o:["Poona","Snurfer","Basket-net"], x:"William Morgan called his game “Mintonette”, only 4 years after basketball was born."},
-  {q:"British officers brought back a game from India called “poona”. What is it called today?", a:"Badminton", o:["Snooker","Polo","Squash"], x:"It was renamed after Badminton House, an English country house."},
-  {q:"Where were the first common rules of modern football written in 1863?", a:"In a London pub", o:["At Rugby School","At Wimbledon","At Cambridge University"], x:"Clubs met in a London pub and created the Football Association. The key rule: no hands!"},
-  {q:"Which of these Olympic sports was NOT born in an English-speaking country?", a:"Handball", o:["Squash","Lacrosse","Breaking"], x:"Handball comes from Denmark and Germany. Squash is English, lacrosse was codified in Canada, breaking was born in New York."},
-  {q:"Breaking made its Olympic debut at Paris 2024. Where was it born in the 1970s?", a:"The Bronx, New York", o:["Los Angeles","London","Toronto"], x:"Breaking was born in the streets of the Bronx, New York."},
-  {q:"Which sport, first played by Indigenous peoples of North America, was codified in Canada in 1867?", a:"Lacrosse", o:["Ice hockey","Curling","Baseball"], x:"Lacrosse is Canada’s national summer sport, and it comes to the Olympics at LA 2028."},
-  {q:"The Rugby World Cup trophy is named after…", a:"William Webb Ellis", o:["Pierre de Coubertin","James Naismith","Charles Miller"], x:"Legend says the student William Webb Ellis picked up the ball and ran with it in 1823."},
-  {q:"Cricket was played at the Olympics only once before LA 2028. When?", a:"Paris 1900", o:["London 1908","Athens 1896","London 1948"], x:"One match only: Great Britain v France. Most of the “French” team were British people living in Paris!"},
-  {q:"In which country is St Andrews, known as “the Home of Golf”?", a:"Scotland", o:["England","Ireland","Wales"], x:"Golf comes from 15th-century Scotland, and St Andrews made the 18-hole course the standard."},
-  {q:"What did the word “snooker” originally mean?", a:"A first-year military cadet", o:["A lost ball","A bad shot","A pub owner"], x:"Snooker was invented by British army officers in India in 1875. A “snooker” was slang for a new cadet."},
-  {q:"The first organised indoor ice hockey game was played in 1875. In which city?", a:"Montreal", o:["Toronto","Boston","Ottawa"], x:"Ice hockey is Canadian, and the Stanley Cup dates from 1893."},
-  {q:"Modern tennis was created in England in 1874. What is its French ancestor called?", a:"Jeu de paume", o:["La soule","Pétanque","Le palet"], x:"Lawn tennis grew out of the French “jeu de paume”, a game first played with the palm of the hand."},
-  {q:"Wimbledon is the oldest tennis tournament in the world. When was it first played?", a:"1877", o:["1896","1924","1863"], x:"Wimbledon started in 1877, only three years after modern lawn tennis was created."},
-  {q:"Table tennis was invented in Victorian England as an after-dinner game. What was sometimes used as a net?", a:"Books", o:["A broom","Plates","A rope"], x:"In the 1880s, people played on dining tables with a row of books as the net."},
-  {q:"What was “ping-pong” originally?", a:"A brand name", o:["A Chinese word","The sound of a bell","The name of a school"], x:"“Ping-pong” was a trademark before it became a common name for table tennis."},
-  {q:"Squash, coming to the Olympics at LA 2028, was invented around 1830 at which school?", a:"Harrow School", o:["Eton College","Rugby School","Oxford University"], x:"Pupils at Harrow School invented squash around 1830."},
-  {q:"Modern boxing rules (gloves, 3-minute rounds) were written in England in 1867. What are they called?", a:"The Queensberry Rules", o:["The Cambridge Rules","The Wimbledon Rules","The London Code"], x:"The Queensberry Rules are still the basis of modern boxing."},
-  {q:"Water polo was created in Britain in the 1870s. How was it first described?", a:"Football in the water", o:["Rugby on a boat","Swimming hockey","Water basketball"], x:"Water polo started as a kind of “football in the water”."},
-  {q:"The word “derby” comes from a famous English horse race. Which one?", a:"The Epsom Derby", o:["Royal Ascot","The Grand National","The Kentucky Derby"], x:"The Epsom Derby was first run in 1780."},
-  {q:"Snowboarding was born in the USA in the 1960s. What was the first model called?", a:"The Snurfer", o:["The Mintonette","The Skeeboard","The Snowskate"], x:"Snurfer = snow + surfer!"},
-  {q:"Skateboarding was created in California in the 1950s. By whom?", a:"Surfers with no waves", o:["Skiers in summer","Ice hockey players","BMX riders"], x:"Surfers wanted to “surf” on land when there were no waves. Skateboarding has been Olympic since Tokyo 2020."},
-  {q:"Pickleball, the fastest-growing sport in the USA, was invented in 1965 near which city?", a:"Seattle", o:["Miami","Chicago","Boston"], x:"Pickleball was invented near Seattle, in Washington State."},
-  {q:"Cheerleading started at the University of Minnesota in 1898. Who led it at first?", a:"Men", o:["Women","Teachers","Children"], x:"Surprise: cheerleading was originally led by men!"},
-  {q:"Australian rules football was created in Melbourne in 1859. Why, possibly?", a:"To keep cricketers fit in winter", o:["To train soldiers","To entertain gold miners","To replace rugby"], x:"It was possibly invented to keep cricketers in shape during the winter."},
-  {q:"Where was the first-ever Formula 1 World Championship race held, in 1950?", a:"Silverstone, England", o:["Monaco","Monza, Italy","Le Mans, France"], x:"F1 started at Silverstone, and most F1 teams are still based in England."},
-  {q:"Slalom rules were invented in 1922 by an Englishman, Arnold Lunn. In which country?", a:"Switzerland", o:["Norway","Austria","Canada"], x:"Skiing comes from Norway, but the slalom rules were written by an Englishman in Switzerland."},
-  {q:"The first recorded bike race took place in Paris in 1868. Who won it?", a:"An Englishman", o:["A Frenchman","An American","A Belgian"], x:"The Englishman James Moore won the first recorded bike race."},
-  {q:"Pierre de Coubertin was inspired by local “Olympian Games” in an English village. Which one?", a:"Much Wenlock", o:["Stratford-upon-Avon","Windsor","Bath"], x:"A doctor, William Penny Brookes, organised “Olympian Games” in Much Wenlock every year from 1850."},
-  {q:"Which city was the first to host the Summer Olympics three times?", a:"London", o:["Paris","Los Angeles","Athens"], x:"London hosted in 1908, 1948 and 2012."}
+  {q:"Basketball was invented in 1891. In which country?", a:"The USA", o:["England", "Australia", "Ireland"], x:"James Naismith invented basketball in Springfield, Massachusetts, USA."},
+  {q:"And what nationality was James Naismith, the inventor of basketball?", a:"Canadian", o:["American", "Scottish", "Australian"], x:"Surprise: the inventor of basketball was Canadian!"},
+  {q:"Where does golf come from?", a:"Scotland", o:["The USA", "Spain", "Japan"], x:"Golf was born in 15th-century Scotland. St Andrews is called “the Home of Golf”."},
+  {q:"Ice hockey was born in…", a:"Canada", o:["Brazil", "Egypt", "India"], x:"The first organised indoor game was played in Montreal in 1875."},
+  {q:"The modern rules of football were written in 1863 in…", a:"England", o:["Brazil", "Spain", "Italy"], x:"Clubs met in a London pub and created the Football Association."},
+  {q:"Rugby got its name from…", a:"A school in England", o:["A city in Australia", "A famous player", "A French word"], x:"Rugby School, in England. The legend says a student picked up the ball and ran with it in 1823."},
+  {q:"The Rugby World Cup trophy is named after a student called…", a:"William Webb Ellis", o:["Harry Potter", "James Bond", "Sherlock Holmes"], x:"William Webb Ellis is the student of the rugby legend."},
+  {q:"Wimbledon, the oldest tennis tournament in the world, is in which city?", a:"London", o:["New York", "Sydney", "Paris"], x:"Wimbledon is in London and started in 1877."},
+  {q:"Breaking (breakdance) was born in the 1970s in…", a:"New York", o:["Paris", "Tokyo", "Rome"], x:"Breaking was born in the Bronx, New York. It was an Olympic sport at Paris 2024."},
+  {q:"Skateboarding was invented in California by…", a:"Surfers", o:["Skiers", "Footballers", "Swimmers"], x:"Surfers wanted to “surf” on land when there were no waves!"},
+  {q:"Cricket comes back to the Olympics in 2028 in which city?", a:"Los Angeles", o:["London", "Sydney", "Paris"], x:"LA 2028 adds 5 new sports, and cricket is one of them."},
+  {q:"Cricket was played at the Olympics only once before 2028: in 1900, in which city?", a:"Paris", o:["New York", "Tokyo", "Cairo"], x:"Paris 1900: Great Britain v France, just one match!"},
+  {q:"Volleyball was invented in 1895 in…", a:"The USA", o:["Italy", "Japan", "Brazil"], x:"William Morgan invented it in the USA, 4 years after basketball."},
+  {q:"Which sport uses a shuttlecock?", a:"Badminton", o:["Tennis", "Squash", "Golf"], x:"Badminton is named after Badminton House, in England."},
+  {q:"British officers brought back a game called “poona” from India. What is it called today?", a:"Badminton", o:["Snooker", "Polo", "Cricket"], x:"“Poona” became badminton in England."},
+  {q:"Lacrosse comes to the Olympics at LA 2028. It is the national summer sport of…", a:"Canada", o:["Spain", "China", "Kenya"], x:"Lacrosse was first played by Indigenous peoples and codified in Canada in 1867."},
+  {q:"Baseball comes from…", a:"The USA", o:["Mexico", "Italy", "Egypt"], x:"Baseball was born in the USA in the 1840s, and it is back at LA 2028."},
+  {q:"Flag football (new at LA 2028) is a version of…", a:"American football", o:["Handball", "Basketball", "Volleyball"], x:"In flag football, you pull a flag from your opponent’s belt instead of tackling."},
+  {q:"Which city was the first to host the Summer Olympics three times?", a:"London", o:["Rome", "Berlin", "Tokyo"], x:"London hosted in 1908, 1948 and 2012."},
+  {q:"Snowboarding was invented in the 1960s in…", a:"The USA", o:["Egypt", "India", "Brazil"], x:"The first snowboard was called the “Snurfer” (snow + surfer)."},
+  {q:"Olympic surfing comes from…", a:"Hawaii", o:["Iceland", "Switzerland", "Egypt"], x:"Surfing comes from Hawaii (USA), and it has been an Olympic sport since Tokyo 2020."},
+  {q:"Table tennis was invented in England as a game played on…", a:"A dining table", o:["A boat", "A football pitch", "The beach"], x:"After dinner, people played on the table, sometimes with books as the net!"},
+  {q:"Thanks to the boxing rules written in England in 1867, boxers must wear…", a:"Gloves", o:["Helmets", "Skates", "Flippers"], x:"The Queensberry Rules introduced gloves and 3-minute rounds."},
+  {q:"The first Formula 1 World Championship race (1950) took place in…", a:"England", o:["Brazil", "Japan", "Australia"], x:"It was at Silverstone, in England."},
+  {q:"Cheerleading was born in 1898 in…", a:"The USA", o:["Japan", "Italy", "Egypt"], x:"It started at the University of Minnesota, and at first only men did it!"},
+  {q:"How many new sports will there be at LA 2028?", a:"5", o:["1", "20", "50"], x:"Cricket, squash, lacrosse, flag football and baseball/softball."},
+  {q:"Squash (new at LA 2028) was invented around 1830 in…", a:"England", o:["The USA", "France", "Australia"], x:"Pupils at Harrow School, in England, invented squash."},
+  {q:"Which of these Olympic sports does NOT come from an English-speaking country?", a:"Handball", o:["Golf", "Basketball", "Rugby"], x:"Handball comes from Denmark and Germany."},
+  {q:"Who revived the modern Olympic Games in 1896?", a:"Pierre de Coubertin", o:["Napoleon", "William Shakespeare", "Albert Einstein"], x:"Coubertin was French, but he was inspired by sport in English schools."},
+  {q:"Coubertin was inspired by the “Olympian Games” of an English village. Its name is…", a:"Much Wenlock", o:["New York", "Hollywood", "Liverpool"], x:"Much Wenlock has organised its own “Olympian Games” since 1850."}
 ];
-const N = 10, TIME = 12000;
+const N = 10, TIME = 20000;
 const $ = id => document.getElementById(id);
 let qs = [], i = 0, score = 0, right = 0, t0 = 0, raf = 0, locked = false, spent = 0;
 
